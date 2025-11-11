@@ -4,7 +4,7 @@ curl --location 'http://localhost:8080/products/02002212' \
 --header 'accept: application/json'
 
 
-* retrieve products all products
+* retrieve all products
 
 curl --location 'http://localhost:8080/products/' \
 --header 'accept: application/json'
