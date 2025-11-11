@@ -42,6 +42,7 @@ The system leverages JAXB for XML binding and exposes endpoints to query product
 
 ### Build and Run
 
+```bash
 # Build the project (Maven)
 mvn clean install
 
