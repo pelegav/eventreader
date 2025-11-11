@@ -28,9 +28,6 @@ public class FileScheduler {
     private EventService eventService;
     private RequestDetailsService requestDetailsService;
 
-//    final String SOURCE = "input";
-//    final String BACKUP = "backup";
-
     private Path sourcePath = Paths.get("input");
     private Path backupPath = Paths.get("backup");
 
