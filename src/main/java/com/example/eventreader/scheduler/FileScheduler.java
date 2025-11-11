@@ -89,7 +89,6 @@ public class FileScheduler {
                 }
                 Path targetFile = backupPath.resolve(entry.getFileName());
                 Files.move(entry, targetFile, StandardCopyOption.REPLACE_EXISTING);
-
             }
         } catch (IOException | JAXBException e) {
             throw new RuntimeException(e);

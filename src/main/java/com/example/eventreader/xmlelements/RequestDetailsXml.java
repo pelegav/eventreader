@@ -6,16 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Setter
+@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @NoArgsConstructor
 public class RequestDetailsXml {
-    @Getter
-    @Setter
     private String id;
-    @Getter
-    @Setter
     private String acceptDate;
-    @Getter
-    @Setter
     private String sourceCompany;
 }

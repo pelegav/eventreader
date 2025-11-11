@@ -1,6 +1,7 @@
 package com.example.eventreader.controller;
 
 import com.example.eventreader.model.Product;
+import com.example.eventreader.model.ProductResponse;
 import com.example.eventreader.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +19,8 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/{insuredId}")
-    public List<Product> getProducts(@PathVariable String insuredId) {
-        return productService.getProductsByInsuredId(insuredId);
+    public ProductResponse getProducts(@PathVariable String insuredId) {
+        return productService.getProductsGroupedBySourceCompanyAccordingInsuredId(insuredId);
     }
 
     @GetMapping("/")

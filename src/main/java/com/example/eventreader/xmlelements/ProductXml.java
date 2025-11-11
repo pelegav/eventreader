@@ -9,21 +9,15 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Setter
+@Getter
 @XmlAccessorType(XmlAccessType.FIELD)
 @NoArgsConstructor
 public class ProductXml {
-    @Getter
-    @Setter
     private String type;
-    @Getter
-    @Setter
     private Double price;
-    @Setter
-    @Getter
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate startDate;
-    @Setter
-    @Getter
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     private LocalDate endDate;
 }

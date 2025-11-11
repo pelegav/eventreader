@@ -6,6 +6,7 @@ import com.example.eventreader.model.RequestDetails;
 import com.example.eventreader.service.EventService;
 import com.example.eventreader.service.ProductService;
 import com.example.eventreader.service.RequestDetailsService;
+import com.example.eventreader.xmlelements.RootXml;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,8 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,31 +36,12 @@ class FileSchedulerTest {
     private FileScheduler fileScheduler;
 
     @TempDir
-    Path tempDir; // תיקיה זמנית
+    Path tempDir;
 
     private Path inputDir;
     private Path backupDir;
 
-    @BeforeEach
-    void setup() throws Exception {
-        inputDir = tempDir.resolve("input");
-        backupDir = tempDir.resolve("backup");
-        Files.createDirectories(inputDir);
-        Files.createDirectories(backupDir);
-
-        fileScheduler = new FileScheduler(
-                productService,
-                eventService,
-                requestDetailsService,
-                inputDir,
-                backupDir
-        );
-    }
-
-    @Test
-    void testScheduledTaskProcessesXmlAndMovesFile() throws Exception {
-
-        String xml = """
+    private final String xml = """
                 <root>
                     <requestDetails>
                         <id>req1</id>
@@ -83,6 +64,24 @@ class FileSchedulerTest {
                 </root>
                 """;
 
+    @BeforeEach
+    void setup() throws Exception {
+        inputDir = tempDir.resolve("input");
+        backupDir = tempDir.resolve("backup");
+        Files.createDirectories(inputDir);
+        Files.createDirectories(backupDir);
+
+        fileScheduler = new FileScheduler(
+                productService,
+                eventService,
+                requestDetailsService,
+                inputDir,
+                backupDir
+        );
+    }
+
+    @Test
+    void testScheduledTaskProcessesXmlAndMovesFile() throws Exception {
         Path xmlFile = inputDir.resolve("test.xml");
         Files.writeString(xmlFile, xml);
 
@@ -99,5 +98,20 @@ class FileSchedulerTest {
 
         assertFalse(Files.exists(xmlFile));
         assertTrue(Files.exists(backupDir.resolve("test.xml")));
+    }
+
+    @Test
+    void testParseXml() throws Exception {
+        Path xmlFile = inputDir.resolve("test.xml");
+        Files.writeString(xmlFile, xml);
+        RootXml root = fileScheduler.parseXml(xmlFile);
+
+        assertNotNull(root);
+        assertEquals("req1", root.getRequestDetails().getId());
+        assertEquals("TestCo", root.getRequestDetails().getSourceCompany());
+        assertEquals(1, root.getEvents().size());
+        assertEquals("ev1", root.getEvents().get(0).getId());
+        assertEquals("P1", root.getEvents().get(0).getProducts().get(0).getType());
+        assertEquals(10, root.getEvents().get(0).getProducts().get(0).getPrice());
     }
 }

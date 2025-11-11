@@ -11,17 +11,15 @@ import lombok.Setter;
 
 import java.util.List;
 
+@Setter
+@Getter
 @XmlRootElement(name = "root")
 @XmlAccessorType(XmlAccessType.FIELD)
 @NoArgsConstructor
 public class RootXml {
-    @Getter
-    @Setter
     @XmlElement(name = "requestDetails")
     private RequestDetails requestDetails;
 
-    @Getter
-    @Setter
     @XmlElementWrapper(name = "events")
     @XmlElement(name = "event")
     private List<EventXml> events;
