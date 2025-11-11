@@ -1,0 +1,10 @@
+* retrieve products by InsuredId group by SourceCompany for each InsuredId.
+
+curl --location 'http://localhost:8080/products/02002212' \
+--header 'accept: application/json'
+
+
+* retrieve products all products
+
+curl --location 'http://localhost:8080/products/' \
+--header 'accept: application/json'
