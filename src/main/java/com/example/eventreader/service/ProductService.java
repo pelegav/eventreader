@@ -18,7 +18,9 @@ public class ProductService {
     private ProductRepository productRepository;
 
     public ProductResponse getProductsGroupedBySourceCompanyAccordingInsuredId(String insuredId) {
+
         List<Product> products = productRepository.findByEvent_InsuredId(insuredId);
+
         Map<String, List<Product>> groupedBySourceCompany = products.stream()
                 .collect(Collectors.groupingBy(
                         p -> p.getEvent().getRequestDetails().getSourceCompany(),
@@ -27,18 +29,21 @@ public class ProductService {
                                 Collectors.toList()
                         )
                 ));
-        ProductResponse response = new ProductResponse();
-        response.setInsuredId(insuredId);
 
         List<SourceCompanyGroup> groups = groupedBySourceCompany.entrySet().stream()
-                .map(entry -> {
+                .map(sourceCompanyAndProducts -> {
                     SourceCompanyGroup group = new SourceCompanyGroup();
-                    group.setSourceCompanyName(entry.getKey());
-                    group.setProducts(entry.getValue());
+                    group.setSourceCompanyName(sourceCompanyAndProducts.getKey());
+                    group.setProducts(sourceCompanyAndProducts.getValue());
                     return group;
                 })
                 .collect(Collectors.toList());
 
+        if(groups.isEmpty()) {
+            return null; // will throw HttpStatus.NOT_FOUND exception
+        }
+        ProductResponse response = new ProductResponse();
+        response.setInsuredId(insuredId);
         response.setSourceCompanies(groups);
         return response;
     }
