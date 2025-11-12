@@ -47,7 +47,7 @@ public class ProductService {
         logger.info("SourceCompanyGroups: {}", groups);
 
         if(groups.isEmpty()) {
-            logger.error("No products for insuredId: {}", insuredId);
+            logger.warn("No products for insuredId: {}", insuredId);
             return null; // will throw HttpStatus.NOT_FOUND exception
         }
         ProductResponse response = new ProductResponse();

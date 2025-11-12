@@ -85,8 +85,8 @@ public class FileScheduler {
                     throw new IOException("Backup path exists but is not a directory: " + backupPath);
                 }
                 Path targetFile = backupPath.resolve(entry.getFileName());
+                logger.info("Moving processed file {} to backup location {}", entry.getFileName(), targetFile);
                 Files.move(entry, targetFile, StandardCopyOption.REPLACE_EXISTING);
-                logger.info("Moved processed file {} to backup location {}", entry.getFileName(), targetFile);
             }
         } catch (IOException | JAXBException e) {
             logger.error("Error processing scheduled task", e);
