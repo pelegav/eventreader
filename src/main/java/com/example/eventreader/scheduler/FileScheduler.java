@@ -13,6 +13,7 @@ import com.example.eventreader.xmlelements.RootXml;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -22,11 +23,12 @@ import java.nio.file.*;
 import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class FileScheduler {
 
-    private ProductService productService;
-    private EventService eventService;
-    private RequestDetailsService requestDetailsService;
+    private final ProductService productService;
+    private final EventService eventService;
+    private final RequestDetailsService requestDetailsService;
 
     private Path sourcePath = Paths.get("input");
     private Path backupPath = Paths.get("backup");
@@ -38,20 +40,6 @@ public class FileScheduler {
         this.productService = productService;
         this.eventService = eventService;
         this.requestDetailsService = requestDetailsService;
-    }
-
-
-    // for testing
-    public FileScheduler(ProductService productService,
-                         EventService eventService,
-                         RequestDetailsService requestDetailsService,
-                         Path sourcePath,
-                         Path backupPath) {
-        this.productService = productService;
-        this.eventService = eventService;
-        this.requestDetailsService = requestDetailsService;
-        this.sourcePath = sourcePath;
-        this.backupPath = backupPath;
     }
 
     @Scheduled(fixedDelayString = "${app.fixed-delay-ms:600000}", initialDelay = 5000)

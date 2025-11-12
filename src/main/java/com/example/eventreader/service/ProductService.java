@@ -4,6 +4,7 @@ import com.example.eventreader.model.Product;
 import com.example.eventreader.model.ProductResponse;
 import com.example.eventreader.model.SourceCompanyGroup;
 import com.example.eventreader.repository.ProductRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +13,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public ProductResponse getProductsGroupedBySourceCompanyAccordingInsuredId(String insuredId) {
 
@@ -24,10 +25,7 @@ public class ProductService {
         Map<String, List<Product>> groupedBySourceCompany = products.stream()
                 .collect(Collectors.groupingBy(
                         p -> p.getEvent().getRequestDetails().getSourceCompany(),
-                        Collectors.mapping(
-                                p->p,
-                                Collectors.toList()
-                        )
+                        Collectors.toList()
                 ));
 
         List<SourceCompanyGroup> groups = groupedBySourceCompany.entrySet().stream()

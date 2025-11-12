@@ -2,14 +2,14 @@ package com.example.eventreader.service;
 
 import com.example.eventreader.model.Event;
 import com.example.eventreader.repository.EventRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class EventService {
 
-    @Autowired
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
 
     public void save(Event event){
         eventRepository.save(event);
