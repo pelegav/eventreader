@@ -21,7 +21,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/{insuredId}")
-    public ProductResponse getProducts(@PathVariable String insuredId) {
+    public ProductResponse getProductsByInsuredId(@PathVariable String insuredId) {
         ProductResponse response =  productService.getProductsGroupedBySourceCompanyAccordingInsuredId(insuredId);
         if (response == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No products found for insuredId: " + insuredId);
