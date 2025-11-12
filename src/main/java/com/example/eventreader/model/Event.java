@@ -26,6 +26,7 @@ public class Event {
     @JsonManagedReference
     private List<Product> products;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "requestDetails_id")
     private RequestDetails requestDetails;

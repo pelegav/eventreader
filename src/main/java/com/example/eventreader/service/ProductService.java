@@ -5,6 +5,8 @@ import com.example.eventreader.model.ProductResponse;
 import com.example.eventreader.model.SourceCompanyGroup;
 import com.example.eventreader.repository.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,15 +20,20 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductResponse getProductsGroupedBySourceCompanyAccordingInsuredId(String insuredId) {
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
 
+
+    public ProductResponse getProductsGroupedBySourceCompanyAccordingInsuredId(String insuredId) {
+        logger.info("Fetching products for insuredId: {}", insuredId);
         List<Product> products = productRepository.findByEvent_InsuredId(insuredId);
+        logger.debug("Retrieved products: {}", products);
 
         Map<String, List<Product>> groupedBySourceCompany = products.stream()
                 .collect(Collectors.groupingBy(
                         p -> p.getEvent().getRequestDetails().getSourceCompany(),
                         Collectors.toList()
                 ));
+        logger.debug("Grouped products: {}", groupedBySourceCompany);
 
         List<SourceCompanyGroup> groups = groupedBySourceCompany.entrySet().stream()
                 .map(sourceCompanyAndProducts -> {
@@ -37,7 +44,10 @@ public class ProductService {
                 })
                 .collect(Collectors.toList());
 
+        logger.info("SourceCompanyGroups: {}", groups);
+
         if(groups.isEmpty()) {
+            logger.error("No products for insuredId: {}", insuredId);
             return null; // will throw HttpStatus.NOT_FOUND exception
         }
         ProductResponse response = new ProductResponse();

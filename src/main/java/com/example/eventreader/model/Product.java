@@ -29,6 +29,7 @@ public class Product {
     @Setter
     private LocalDate endDate;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name="event_id")
     @JsonBackReference

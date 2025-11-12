@@ -14,4 +14,12 @@ import java.util.List;
 public class SourceCompanyGroup {
     private String sourceCompanyName;
     private List<Product> products;
+
+    @Override
+    public String toString() {
+        return "SourceCompanyGroup{" +
+                "sourceCompanyName='" + sourceCompanyName + '\'' +
+                ", products=" + products +
+                '}';
+    }
 }
